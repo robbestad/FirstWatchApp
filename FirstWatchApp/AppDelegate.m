@@ -40,7 +40,7 @@ double timerInterval = 1.0f;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     NSDictionary *dict = @{@"key" : @"startup"};
-    self.dict=dict;
+    _dict=dict;
     
     [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     return YES;
@@ -73,8 +73,8 @@ double timerInterval = 1.0f;
 - (void)application:(UIApplication *)application handleWatchKitExtensionRequest:(NSDictionary *)userInfo reply:(void (^)(NSDictionary *replyInfo))reply
 {
     
-    NSDictionary *di = @{@"key" : @"More PhoneData"};
-    _dict=di;
+//    NSDictionary *di = @{@"key" : @"More PhoneData"};
+ //   _dict=di;
     reply(_dict);
 }
 

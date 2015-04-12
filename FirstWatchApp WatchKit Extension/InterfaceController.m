@@ -35,7 +35,7 @@ double timerInterval = 1.0f;
     [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     
     // Configure interface objects here.
-    [_mainLbl setHidden:YES];
+    [_mainLbl setHidden:NO];
 }
 
 - (NSString *)sharedMessage {
@@ -46,18 +46,33 @@ double timerInterval = 1.0f;
 
 -(void)onTick:(NSTimer*)timer
 {
+    /*
     NSLog(@"Tick...");
     [WKInterfaceController openParentApplication:[NSDictionary dictionary] reply:^(NSDictionary *replyInfo, NSError *error) {
-        
+        NSLog(@"%@",replyInfo);
+        NSLog(@"error: %@",error);
         NSString *strData = replyInfo[@"key"];
-        [_mainLbl setText:strData];
+        if(![@"" isEqualToString:strData]){
+                [_mainLbl setText:strData];
+        }
+       
         [_mainLbl setHidden:NO];
     }];
+    */
 }
+
+- (void)application:(UIApplication *)application
+handleWatchKitExtensionRequest:(NSDictionary *)userInfo
+              reply:(void (^)(NSDictionary *replyInfo))reply{
+    NSLog(@"reply %@",reply);
+}
+
 
 - (void)willActivate {
     // This method is called when watch view controller is about to be visible to user
     [super willActivate];
+    
+
     [WKInterfaceController openParentApplication:[NSDictionary dictionary] reply:^(NSDictionary *replyInfo, NSError *error) {
         
         NSString *strData = replyInfo[@"key"];
