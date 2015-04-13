@@ -12,6 +12,7 @@
 @interface AppDelegate ()
 @property (nonatomic, weak) NSDictionary *dict;
 @property (strong, nonatomic) NSTimer *timer;
+@property (nonatomic) NSUserDefaults *sharedDefaults;
 
 @end
 
@@ -34,6 +35,9 @@ double timerInterval = 1.0f;
     NSDictionary *dict = @{@"key" : @"5 secs"};
     _dict=dict;
     NSLog(@"dict %@",_dict);
+    [self.sharedDefaults setValue:@"test" forKey:@"message"];
+    [self.sharedDefaults synchronize];
+
 }
 
 
@@ -69,13 +73,19 @@ double timerInterval = 1.0f;
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-/* Here we go */
 - (void)application:(UIApplication *)application handleWatchKitExtensionRequest:(NSDictionary *)userInfo reply:(void (^)(NSDictionary *replyInfo))reply
 {
+    self.sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.sharedAppData"];
+ 
+    NSDictionary *di = @{@"key" : @"More PhoneData"};
+    _dict=di;
+    [self.sharedDefaults setValue:@"test" forKey:@"message"];
+    [self.sharedDefaults synchronize];
+    NSString *msg = [self.sharedDefaults objectForKey:@"message"];
+
     
-//    NSDictionary *di = @{@"key" : @"More PhoneData"};
- //   _dict=di;
-    reply(_dict);
+//    [self.sharedDefaults setObject:_dict forKey:@"message"];
+   reply(_dict);
 }
 
 @end

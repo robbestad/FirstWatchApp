@@ -32,6 +32,8 @@ double timerInterval = 1.0f;
 
 - (void)awakeWithContext:(id)context {
     [super awakeWithContext:context];
+    self.sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.sharedAppData"];
+
     [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     
     // Configure interface objects here.
@@ -46,6 +48,10 @@ double timerInterval = 1.0f;
 
 -(void)onTick:(NSTimer*)timer
 {
+    NSString* message=[self sharedMessage];
+    NSLog(@"%@",message);
+    
+    
     /*
     NSLog(@"Tick...");
     [WKInterfaceController openParentApplication:[NSDictionary dictionary] reply:^(NSDictionary *replyInfo, NSError *error) {
@@ -72,7 +78,10 @@ handleWatchKitExtensionRequest:(NSDictionary *)userInfo
     // This method is called when watch view controller is about to be visible to user
     [super willActivate];
     
-
+    NSLog(@"%@ will activate", self);
+    
+    self.sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.sharedAppData"];
+    
     [WKInterfaceController openParentApplication:[NSDictionary dictionary] reply:^(NSDictionary *replyInfo, NSError *error) {
         
         NSString *strData = replyInfo[@"key"];
