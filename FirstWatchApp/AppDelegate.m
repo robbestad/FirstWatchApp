@@ -10,9 +10,9 @@
 #import "AppDelegate.h"
 
 @interface AppDelegate ()
-@property (nonatomic, weak) NSDictionary *dict;
+@property (nonatomic, strong) NSDictionary *dict;
 @property (strong, nonatomic) NSTimer *timer;
-@property (nonatomic) NSUserDefaults *sharedDefaults;
+@property (strong, nonatomic) NSUserDefaults *sharedDefaults;
 
 @end
 
@@ -30,21 +30,28 @@ double timerInterval = 1.0f;
 
 -(void)onTick:(NSTimer*)timer
 {
-    NSLog(@"Tick...");
+  /*  NSLog(@"Tick...");
     NSLog(@"counter");
     NSDictionary *dict = @{@"key" : @"5 secs"};
     _dict=dict;
     NSLog(@"dict %@",_dict);
     [self.sharedDefaults setValue:@"test" forKey:@"message"];
     [self.sharedDefaults synchronize];
+*/
+    NSDictionary *dict = @{@"key" : @"hei"};
+    _dict=dict;
 
 }
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    NSDictionary *dict = @{@"key" : @"startup"};
+    
+    self.sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.sharedAppData"];
+    NSString *msg = [self.sharedDefaults valueForKey:@"message"];
+    NSDictionary *dict = @{@"key" : msg};
     _dict=dict;
+
     
     [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     return YES;
@@ -76,13 +83,15 @@ double timerInterval = 1.0f;
 - (void)application:(UIApplication *)application handleWatchKitExtensionRequest:(NSDictionary *)userInfo reply:(void (^)(NSDictionary *replyInfo))reply
 {
     self.sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.sharedAppData"];
- 
-    NSDictionary *di = @{@"key" : @"More PhoneData"};
-    _dict=di;
-    [self.sharedDefaults setValue:@"test" forKey:@"message"];
-    [self.sharedDefaults synchronize];
-    NSString *msg = [self.sharedDefaults objectForKey:@"message"];
+    NSString *msg = [self.sharedDefaults valueForKey:@"message"];
 
+    /*    NSDictionary *di = @{@"key" : @"More PhoneData"};
+     _dict=di;
+     [self.sharedDefaults setValue:@"test" forKey:@"message"];
+     [self.sharedDefaults synchronize];
+
+     */
+//    NSLog(@"%@",msg);
     
 //    [self.sharedDefaults setObject:_dict forKey:@"message"];
    reply(_dict);

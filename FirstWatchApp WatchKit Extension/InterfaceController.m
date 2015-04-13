@@ -10,8 +10,8 @@
 
 
 @interface InterfaceController()
-@property (nonatomic) NSUserDefaults *sharedDefaults;
-@property (nonatomic) NSString *message;
+@property (strong, nonatomic) NSUserDefaults *sharedDefaults;
+@property (strong, nonatomic) NSString *message;
 @property (strong, nonatomic) NSTimer *timer;
 @property (weak, nonatomic) IBOutlet WKInterfaceLabel *mainLbl;
 
@@ -41,18 +41,18 @@ double timerInterval = 1.0f;
 }
 
 - (NSString *)sharedMessage {
-    NSString *message = [self.sharedDefaults valueForKey:@"message"];
+    NSString *message = [self.sharedDefaults objectForKey:@"message"];
     NSLog(@"message: %@",message);
     return message;
 }
 
 -(void)onTick:(NSTimer*)timer
 {
-    NSString* message=[self sharedMessage];
+    /* NSString* message=[self sharedMessage];
     NSLog(@"%@",message);
     
     
-    /*
+   
     NSLog(@"Tick...");
     [WKInterfaceController openParentApplication:[NSDictionary dictionary] reply:^(NSDictionary *replyInfo, NSError *error) {
         NSLog(@"%@",replyInfo);
@@ -81,7 +81,9 @@ handleWatchKitExtensionRequest:(NSDictionary *)userInfo
     NSLog(@"%@ will activate", self);
     
     self.sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.sharedAppData"];
-    
+    NSString* message=[self sharedMessage];
+    NSLog(@"%@",message);
+
     [WKInterfaceController openParentApplication:[NSDictionary dictionary] reply:^(NSDictionary *replyInfo, NSError *error) {
         
         NSString *strData = replyInfo[@"key"];

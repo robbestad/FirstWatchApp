@@ -10,6 +10,7 @@
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *inputField;
+@property (strong, nonatomic) NSUserDefaults *sharedDefaults;
 
 @end
 
@@ -17,6 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -24,10 +26,17 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (IBAction)pushButton:(id)sender {
+    self.sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.sharedAppData"];
+    [self.sharedDefaults setValue:@"test" forKey:@"message"];
+    [self.sharedDefaults synchronize];
+    
+    NSLog(@"%@",[self.sharedDefaults valueForKey:@"message"]);
+}
 
 
 - (IBAction)updateMessage:(id)sender {
-    NSLog(@"%@",_inputField.text);
+   // NSLog(@"%@",_inputField.text);
 }
 
 
